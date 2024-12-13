@@ -24,8 +24,18 @@ router.get("/Reservations", async (req, res) => {
   }
 });
 
-router.delete("/Reservation/:id", async (req, res) => {
-  const results=await service.deleteRentalById(id);
+router.get("/Offices", async (req, res) => {
+  const results = await service.getAllOffices();
+  res.json(results);
+})
+
+router.get("/Cars", async (req, res) => {
+  const results = await service.getAllCars();
+  res.json(results);
+})
+
+router.delete("/Reservation", async (req, res) => {
+  const results=await service.deleteRentalById(req.query.id);
   res.json(results);
 })
 

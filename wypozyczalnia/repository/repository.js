@@ -82,6 +82,9 @@ class Repository {
         WHERE 
             Rental.id = ?;
         `,[id]);
+        if(rows.length===0){
+            throw new Error(`Rental with ID ${id} does not exist`);
+        }
         return rows;
 
     }
@@ -106,14 +109,50 @@ class Repository {
         `);
         return rows;
     }
+    async getAllOffices() {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+            SELECT
+                Office.id,
+                Office.address,
+                Office.postal_code,
+                City.name AS cityName,
+                City.state AS cityState
+            FROM
+                Office
+            INNER JOIN
+                City ON Office.city_id = City.id;
+        `);
+        return rows;
+    }
+
+    async getAllCars() {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+            SELECT
+                Car.id,
+                Car.brand,
+                Car.model,
+                Car.production_year AS productionYear,
+                Car.color,
+                Car.car_registration AS carRegistration,
+                Car.price
+            FROM
+                Car;
+        `);
+        return rows;
+    }
 
     async deleteRentalById(id) {
         if (!this.master_db) {
             throw new Error("Database connection is not initialized");
         }
-
-        try {
-
             const [result] = await this.master_db.query(
                 "DELETE FROM Rental WHERE id = ?",
                 [id]
@@ -123,11 +162,9 @@ class Repository {
                 throw new Error(`Rental with ID ${id} does not exist`);
             }
             return { success: true, message: `Rental with ID ${id} deleted successfully.` };
-        } catch (error) {
-            return { success: false, message: error.message };
-
-        }
     }
+
+
 }
 
 module.exports = new Repository();

@@ -5,10 +5,7 @@ const repository=require("./repository/repository.js");
 
 const app = express();
 
-// Middleware
 app.use(bodyParser.json());
-
-// API routes
 app.use("/api/rental", carRoutes);
 
 

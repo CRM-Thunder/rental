@@ -8,13 +8,27 @@ class Service {
         return await repository.getCarsWithDetails();
     }
     async getReservationInfo(id){
-        return await repository.getReservationInfo(id);
+         try{
+            return await repository.getReservationInfo(id);
+         }catch (error) {
+             return { success: false, message: error.message};
+         }
     }
     async getReservations() {
         return await repository.getReservations();
     }
+    async getAllOffices() {
+        return await repository.getAllOffices();
+    }
+    async getAllCars() {
+        return await repository.getAllCars();
+    }
     async deleteRentalById(id) {
-        return await repository.deleteRentalById(id);
+         try {
+             return await repository.deleteRentalById(id);
+         }catch (error) {
+             return { success: false, message: error.message};
+         }
     }
 }
 module.exports=new Service();
