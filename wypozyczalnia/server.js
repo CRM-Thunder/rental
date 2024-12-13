@@ -11,7 +11,6 @@ app.use(bodyParser.json());
 // API routes
 app.use("/api/rental", carRoutes);
 
-// Port
 
 const PORT = 3000; // Możesz zmienić według potrzeb
 const startServer=async()=>{

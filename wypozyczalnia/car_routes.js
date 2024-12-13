@@ -10,6 +10,24 @@ router.get("/CarsWithDetails", async (req, res) => {
 
 
 });
+router.get("/ReservationInfo", async (req, res) => {
+      const results= await service.getReservationInfo(req.query.id);
+      res.json(results);
+})
+
+router.get("/Reservations", async (req, res) => {
+  try {
+    const results = await service.getReservations();
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({error: err.message});
+  }
+});
+
+router.delete("/Reservation/:id", async (req, res) => {
+  const results=await service.deleteRentalById(id);
+  res.json(results);
+})
 
 // Dodaj nowy samochód
 router.post("/", (req, res) => {
