@@ -23,6 +23,25 @@ class Service {
     async getAllCars() {
         return await repository.getAllCars();
     }
+    async getReservationsByCarId(id) {
+        return await repository.getReservationsByCarId(id);
+    }
+    async getUnverifiedReservations() {
+        return await repository.getUnverifiedReservations();
+    }
+    async getAvailableCarsByOfficeAndDates(officeId, startDate, endDate) {
+        return await repository.getAvailableCarsByOfficeAndDates(officeId, startDate, endDate);
+    }
+
+    async addRental(car_id,customer_id,start_date,end_date) {
+         try {
+            return await repository.addRental(car_id,customer_id,start_date,end_date);
+         }
+         catch (error) {
+             return { success: false, message: error.message};
+         }
+    }
+
     async deleteRentalById(id) {
          try {
              return await repository.deleteRentalById(id);
@@ -30,5 +49,13 @@ class Service {
              return { success: false, message: error.message};
          }
     }
+    async verifyRental(id){
+        try {
+            return await repository.verifyRental(id);
+        }catch(error){
+            return { success: false, message: error.message};
+        }
+    }
+
 }
 module.exports=new Service();

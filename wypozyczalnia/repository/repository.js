@@ -45,30 +45,30 @@ class Repository {
             throw new Error("Database connection is not initialized");
         }
         const [rows]=await this.slave_db.query(`SELECT 
-            Rental.id AS rental_id,
+            Rental.id AS rentalId,
             Rental.start_date,
             Rental.end_date,
             Rental.is_reservation_active,
             Rental.sum_price,
-            Car.id AS car_id,
+            Car.id AS carId,
             Car.brand,
             Car.model,
             Car.production_year,
             Car.color,
             Car.car_registration,
-            Car.price AS car_price,
-            Customer.id AS customer_id,
-            Customer.name AS customer_name,
-            Customer.surname AS customer_surname,
-            Customer.age AS customer_age,
-            Customer.address AS customer_address,
-            Customer.postal_code AS customer_postal_code,
-            Customer.email AS customer_email,
-            Office.id AS office_id,
-            Office.address AS office_address,
-            Office.postal_code AS office_postal_code,
-            City.name AS city_name,
-            City.state AS city_state
+            Car.price AS carPrice,
+            Customer.id AS customerId,
+            Customer.name AS customerName,
+            Customer.surname AS customerSurname,
+            Customer.age AS customerAge,
+            Customer.address AS customerAddress,
+            Customer.postal_code AS customerPostalCode,
+            Customer.email AS customerEmail,
+            Office.id AS officeId,
+            Office.address AS officeAddress,
+            Office.postal_code AS officePostalCode,
+            City.name AS cityName,
+            City.state AS cityState
         FROM 
             Rental
         INNER JOIN 
@@ -96,12 +96,12 @@ class Repository {
 
         const [rows] = await this.slave_db.query(`
             SELECT
-                Rental.id AS "Identyfikator rezerwacji",
-                Car.car_registration AS Rejestracja,
-                Car.brand AS Marka,
-                Car.model AS Model,
-                Rental.start_date AS Data_Wypożyczenia,
-                Rental.end_date AS Data_Zwrotu
+                Rental.id AS rentalId,
+                Car.car_registration AS carRegistration,
+                Car.brand,
+                Car.model,
+                Rental.start_date AS leaseStartDate,
+                Rental.end_date AS leaseEndDate
             FROM
                 Rental
             INNER JOIN
@@ -118,7 +118,7 @@ class Repository {
             SELECT
                 Office.id,
                 Office.address,
-                Office.postal_code,
+                Office.postal_code AS postalCode,
                 City.name AS cityName,
                 City.state AS cityState
             FROM
@@ -149,6 +149,104 @@ class Repository {
         return rows;
     }
 
+    async getReservationsByCarId(carId) {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+            SELECT
+                Rental.id AS rentalId,
+                Rental.start_date AS leaseStartDate,
+                Rental.end_date AS leaseEndDate,
+                Rental.is_reservation_active AS isReservationActive,
+                Rental.sum_price AS sumPrice,
+                Customer.name AS customerName,
+                Customer.surname AS customerSurname,
+                Car.brand,
+                Car.model
+            FROM
+                Rental
+            INNER JOIN
+                Car ON Rental.car_id = Car.id
+            INNER JOIN
+                Customer ON Rental.customer_id = Customer.id
+            WHERE
+                Car.id = ?;
+        `, [carId]);
+
+        return rows;
+    }
+
+    async getUnverifiedReservations() {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+        SELECT
+            Rental.id AS rentalId,
+            Rental.start_date AS leaseStartDate,
+            Rental.end_date AS leaseEndDate,
+            Rental.sum_price AS sumPrice,
+            Customer.name AS customerName,
+            Customer.surname AS customerSurname,
+            Car.brand,
+            Car.model
+        FROM
+            Rental
+        INNER JOIN
+            Car ON Rental.car_id = Car.id
+        INNER JOIN
+            Customer ON Rental.customer_id = Customer.id
+        WHERE
+            Rental.is_verified = 0;
+    `);
+
+        return rows;
+    }
+
+
+    async getAvailableCarsByOfficeAndDates(officeId, startDate, endDate) {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+            SELECT c.brand, c.model,  c.production_year AS productionYear, c.color, c.price
+            FROM Car c
+            WHERE c.office_id = ?
+              AND NOT EXISTS (
+                SELECT 1
+                FROM Rental r
+                WHERE r.car_id = c.id
+                  AND (
+                    (r.start_date < ? AND r.end_date > ?)
+                  )
+            );
+        `, [officeId, endDate, startDate]);
+
+        return rows;
+    }
+
+
+
+    async addRental(car_id,customer_id,start_date,end_date) {
+        if(!this.master_db){
+            throw new Error("Database connection is not initialized");
+        }
+        const [result] =await this.master_db.query(`
+            INSERT INTO Rental (car_id, customer_id, start_date, end_date, is_verified, sum_price)
+            VALUES (?, ?, ?, ?, 0,(SELECT (TIMESTAMPDIFF(HOUR, ?, ?))*Car.price FROM Car WHERE Car.id = ?));
+        `,[car_id,customer_id,start_date,end_date, start_date, end_date, car_id]);
+        if(result.affectedRows===0){
+            throw new Error("Error while adding rental");
+        }
+        return { success: true, message: "Rental added successfully." };
+
+    }
+
+
     async deleteRentalById(id) {
         if (!this.master_db) {
             throw new Error("Database connection is not initialized");
@@ -162,6 +260,19 @@ class Repository {
                 throw new Error(`Rental with ID ${id} does not exist`);
             }
             return { success: true, message: `Rental with ID ${id} deleted successfully.` };
+    }
+    async verifyRental(id){
+        if(!this.master_db){
+            throw new Error("Database connection is not initialized");
+        }
+        const [result] = await this.master_db.query(
+            "UPDATE Rental SET is_verified = 1 WHERE id = ?",
+            [id]
+        );
+        if(result.affectedRows===0){
+            throw new Error(`Rental with ID ${id} does not exist`);
+        }
+        return { success: true, message: `Rental with ID ${id} verified successfully.` };
     }
 
 
