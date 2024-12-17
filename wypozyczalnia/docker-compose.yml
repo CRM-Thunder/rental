@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql-master:
+    image: mysql:8.0
+    container_name: mysql-master
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: master_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - master-data:/var/lib/mysql
+    command: --server-id=1 --log-bin=mysql-bin --binlog-format=ROW
+
+  mysql-slave:
+    image: mysql:8.0
+    container_name: mysql-slave
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+    depends_on:
+      - mysql-master
+    ports:
+      - "3307:3306"
+    volumes:
+      - slave-data:/var/lib/mysql
+    command: --server-id=2 --relay-log=mysql-relay-bin --read-only=1
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mysql-master
+      PMA_PORT: 3306
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql-master
+      - mysql-slave
+
+volumes:
+  master-data:
+  slave-data:
