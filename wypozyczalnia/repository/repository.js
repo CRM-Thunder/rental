@@ -7,7 +7,7 @@ class Repository {
     }
 
     async init() {
-        await connectDatabases(); // Poczekaj, aż połączenie zostanie nawiązane
+        await connectDatabases();
         this.master_db = getMasterDb();
         this.slave_db=getSlaveDb();
     }
@@ -48,7 +48,7 @@ class Repository {
             Rental.id AS rentalId,
             Rental.start_date,
             Rental.end_date,
-            Rental.is_reservation_active,
+            Rental.is_verified,
             Rental.sum_price,
             Car.id AS carId,
             Car.brand,

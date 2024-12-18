@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const service=require("./services/service.js");
 
-// Pobierz listę wszystkich samochodów
+
 router.get("/CarsWithDetails", async (req, res) => {
       const results= await service.getCarsWithDetails();
       res.json(results);

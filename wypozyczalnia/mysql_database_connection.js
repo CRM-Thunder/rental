@@ -35,7 +35,7 @@ async function connectDatabases() {
   }
 }
 
-// Eksportujemy funkcję asynchroniczną, która gwarantuje połączenia
+
 module.exports = {
   connectDatabases,
   getMasterDb: () => master_db,

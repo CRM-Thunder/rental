@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use("/api/rental", carRoutes);
 
 
-const PORT = 3000; // Możesz zmienić według potrzeb
+const PORT = 3000;
 const startServer=async()=>{
   await repository.init();
   console.log("Odpalił init");
