@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-master:3306
--- Generation Time: Dec 17, 2024 at 01:38 PM
+-- Generation Time: Dec 18, 2024 at 02:36 PM
 -- Wersja serwera: 8.0.40
 -- Wersja PHP: 8.2.26
 
@@ -90,21 +90,19 @@ CREATE TABLE `Customer` (
                             `address` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL,
                             `postal_code` varchar(6) COLLATE utf8mb4_polish_ci NOT NULL,
                             `city_id` int NOT NULL,
-                            `email` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `login` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `password_hash` varchar(512) COLLATE utf8mb4_polish_ci NOT NULL
+                            `email` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
 -- Dumping data for table `Customer`
 --
 
-INSERT INTO `Customer` (`id`, `name`, `surname`, `age`, `address`, `postal_code`, `city_id`, `email`, `login`, `password_hash`) VALUES
-                                                                                                                                    (1, 'Jan', 'Kowalski', 30, 'ul. Zielona 1', '01-001', 1, 'jan.kowalski@example.com', 'jank', 'hash1'),
-                                                                                                                                    (2, 'Anna', 'Nowak', 25, 'ul. Błękitna 5', '30-005', 2, 'anna.nowak@example.com', 'annan', 'hash2'),
-                                                                                                                                    (3, 'Piotr', 'Wiśniewski', 35, 'ul. Słoneczna 10', '80-010', 3, 'piotr.wisniewski@example.com', 'piotrw', 'hash3'),
-                                                                                                                                    (4, 'Maria', 'Zielińska', 28, 'ul. Wiosenna 15', '60-015', 4, 'maria.zielinska@example.com', 'mariaz', 'hash4'),
-                                                                                                                                    (5, 'Tomasz', 'Lewandowski', 40, 'ul. Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com', 'tomaszl', 'hash5');
+INSERT INTO `Customer` (`id`, `name`, `surname`, `age`, `address`, `postal_code`, `city_id`, `email`) VALUES
+                                                                                                          (1, 'Jan', 'Kowalski', 30, 'ul. Zielona 1', '01-001', 1, 'jan.kowalski@example.com'),
+                                                                                                          (2, 'Anna', 'Nowak', 25, 'ul. Błękitna 5', '30-005', 2, 'anna.nowak@example.com'),
+                                                                                                          (3, 'Piotr', 'Wiśniewski', 35, 'ul. Słoneczna 10', '80-010', 3, 'piotr.wisniewski@example.com'),
+                                                                                                          (4, 'Maria', 'Zielińska', 28, 'ul. Wiosenna 15', '60-015', 4, 'maria.zielinska@example.com'),
+                                                                                                          (5, 'Tomasz', 'Lewandowski', 40, 'ul. Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com');
 
 -- --------------------------------------------------------
 
@@ -182,7 +180,7 @@ INSERT INTO `Rental` (`id`, `car_id`, `customer_id`, `start_date`, `end_date`, `
 --
 ALTER TABLE `Car`
     ADD PRIMARY KEY (`id`),
-  ADD KEY `office_id_in_car_fk` (`office_id`);
+    ADD KEY `office_id_in_car_fk` (`office_id`);
 
 --
 -- Indeksy dla tabeli `City`
@@ -195,7 +193,7 @@ ALTER TABLE `City`
 --
 ALTER TABLE `Customer`
     ADD PRIMARY KEY (`id`),
-  ADD KEY `city_id_in_customer_fk` (`city_id`);
+    ADD KEY `city_id_in_customer_fk` (`city_id`);
 
 --
 -- Indeksy dla tabeli `Employee`
@@ -208,15 +206,15 @@ ALTER TABLE `Employee`
 --
 ALTER TABLE `Office`
     ADD PRIMARY KEY (`id`),
-  ADD KEY `city_id_in_office_FK` (`city_id`);
+    ADD KEY `city_id_in_office_FK` (`city_id`);
 
 --
 -- Indeksy dla tabeli `Rental`
 --
 ALTER TABLE `Rental`
     ADD PRIMARY KEY (`id`),
-  ADD KEY `customer_id_in_rental_fk` (`customer_id`),
-  ADD KEY `car_id_in_rental_fk` (`car_id`);
+    ADD KEY `customer_id_in_rental_fk` (`customer_id`),
+    ADD KEY `car_id_in_rental_fk` (`car_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -285,7 +283,7 @@ ALTER TABLE `Office`
 --
 ALTER TABLE `Rental`
     ADD CONSTRAINT `car_id_in_rental_fk` FOREIGN KEY (`car_id`) REFERENCES `Car` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `customer_id_in_rental_fk` FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+    ADD CONSTRAINT `customer_id_in_rental_fk` FOREIGN KEY (`customer_id`) REFERENCES `Customer` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
