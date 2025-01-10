@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const service=require("./services/service.js");
+const authenticateToken=require("./middleware/middleware");
 
 
 router.get("/CarsWithDetails", async (req, res) => {
@@ -9,12 +10,12 @@ router.get("/CarsWithDetails", async (req, res) => {
 
 
 });
-router.get("/ReservationInfo", async (req, res) => {
+router.get("/ReservationInfo",authenticateToken, async (req, res) => {
       const results= await service.getReservationInfo(req.query.id);
       res.json(results);
 })
 
-router.get("/Reservations", async (req, res) => {
+router.get("/Reservations",authenticateToken, async (req, res) => {
   try {
     const results = await service.getReservations();
     res.json(results);
@@ -33,12 +34,12 @@ router.get("/Cars", async (req, res) => {
   res.json(results);
 })
 
-router.get("/CarReservation", async (req, res) => {
+router.get("/CarReservation",authenticateToken, async (req, res) => {
   const results=await service.getReservationsByCarId(req.query.id);
   res.json(results);
 })
 
-router.get("/UnverifiedReservations", async (req, res) => {
+router.get("/UnverifiedReservations",authenticateToken, async (req, res) => {
   const results=await service.getUnverifiedReservations();
   res.json(results);
 })
@@ -49,17 +50,28 @@ router.get("/AvailableCars",async (req, res) => {
   res.json(results);
 })
 
-router.post("/Reservation", async (req, res) => {
-  const {car_id, customer_id, start_date, end_date}=req.body;
-  const results=await service.addRental(car_id, customer_id, start_date, end_date);
+router.get("/EmployeeInfo",authenticateToken,async (req,res)=>{
+  const results=await service.getEmployeeData(req.user.id);
   res.json(results);
 })
 
-router.delete("/Reservation", async (req, res) => {
+router.post("/Reservation", async (req, res) => {
+  const {car_id, customer, start_date, end_date}=req.body;
+  const results=await service.addRental(car_id, customer, start_date, end_date);
+  res.json(results);
+})
+
+router.post("/Login", async (req, res)=>{
+  const {login, password}=req.body;
+  const results=await service.login(login,password);
+  res.json(results);
+})
+
+router.delete("/Reservation",authenticateToken, async (req, res) => {
   const results=await service.deleteRentalById(req.query.id);
   res.json(results);
 })
-router.put("/Verify", async (req, res) => {
+router.put("/Verify",authenticateToken, async (req, res) => {
   const results=await service.verifyRental(req.query.id);
   res.json(results);
 })

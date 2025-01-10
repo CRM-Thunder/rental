@@ -12,6 +12,37 @@ class Repository {
         this.slave_db=getSlaveDb();
     }
 
+    async getEmployeeLoginPassword(username){
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(
+            `SELECT id, login, password_hash
+             FROM Employee
+             WHERE login=? LIMIT 1;`
+        ,[username]);
+        if(rows.length===0){
+            throw new Error("Failed to authenticate");
+        }
+        return rows[0];
+    }
+    async getEmployeeData(id){
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(
+            `SELECT id, login, name, surname, email
+             FROM Employee
+             WHERE id=? LIMIT 1;`
+            ,[id]);
+        if(rows.length===0){
+            throw new Error("Failed to authenticate");
+        }
+        return rows[0];
+    }
+
     async getCarsWithDetails() {
         if (!this.slave_db) {
             throw new Error("Database connection is not initialized");
@@ -148,6 +179,29 @@ class Repository {
         `);
         return rows;
     }
+    async checkCityExists(cityName, stateName) {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+        SELECT
+            id
+        FROM
+            City
+        WHERE
+            LOWER(name) = ? AND LOWER(state) = ?;
+    `, [cityName, stateName]);
+        if (rows.length>0){
+            return rows[0].id;
+        }
+        else{
+            return false;
+        }
+    }
+
+
+
 
     async getReservationsByCarId(carId) {
         if (!this.slave_db) {
@@ -213,7 +267,7 @@ class Repository {
         }
 
         const [rows] = await this.slave_db.query(`
-            SELECT c.brand, c.model,  c.production_year AS productionYear, c.color, c.price
+            SELECT c.id, c.brand, c.model,  c.production_year AS productionYear, c.color, c.price
             FROM Car c
             WHERE c.office_id = ?
               AND NOT EXISTS (
@@ -229,6 +283,40 @@ class Repository {
         return rows;
     }
 
+    async isCarAvailable(carId, startDate, endDate) {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+        SELECT 1
+        FROM Rental r
+        WHERE r.car_id = ?
+          AND (
+            (r.start_date < ? AND r.end_date > ?)
+          )
+    `, [carId, endDate, startDate]);
+
+        return rows.length === 0;
+    }
+
+
+
+    async addCity(cityName, stateName) {
+        if (!this.master_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        // Wstawienie nowego miasta
+        const [result] = await this.master_db.query(`
+        INSERT INTO City (name, state)
+        VALUES (?, ?);
+    `, [cityName, stateName]);
+        if(result.affectedRows===0){
+            throw new Error("Error while adding city")
+        }
+        return result.insertId // Zwraca ID nowo dodanego miasta
+    }
 
 
     async addRental(car_id,customer_id,start_date,end_date) {
@@ -242,9 +330,26 @@ class Repository {
         if(result.affectedRows===0){
             throw new Error("Error while adding rental");
         }
-        return { success: true, message: "Rental added successfully." };
+        return result.insertId;
 
     }
+
+    async addCustomer(name, surname, age, address, postalCode, cityId, email) {
+        if (!this.master_db) {
+            throw new Error("Database connection is not initialized");
+        }
+        // Wstawienie nowego klienta
+        const [result] = await this.master_db.query(`
+        INSERT INTO Customer (name, surname, age, address, postal_code, city_id, email)
+        VALUES (?, ?, ?, ?, ?, ?, ?);
+    `, [name, surname, age, address, postalCode, cityId, email]);
+        if(result.affectedRows===0) {
+            throw new Error("Error while adding customer data")
+        }
+            return result.insertId;
+
+    }
+
 
 
     async deleteRentalById(id) {

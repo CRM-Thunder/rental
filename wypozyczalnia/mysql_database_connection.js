@@ -2,18 +2,18 @@ const mysql = require('mysql2/promise');
 
 const master_db_config = {
   host: "127.0.0.1",
-  user: "root",
-  password: "root_password",
-  database: "wypozyczalnia",
-  port: 10001
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  port: process.env.MASTER_PORT
 };
 
 const slave_db_config = {
   host: "127.0.0.1",
-  user: "root",
-  password: "root_password",
-  database: "wypozyczalnia",
-  port: 10002
+  user: process.env.DATABASE_USER,
+  password: process.env.DATABASE_PASSWORD,
+  database: process.env.DATABASE_NAME,
+  port: process.env.SLAVE_PORT
 };
 
 let master_db, slave_db;

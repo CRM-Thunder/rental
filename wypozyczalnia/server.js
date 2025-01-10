@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const carRoutes = require("./car_routes.js");
@@ -9,10 +10,10 @@ app.use(bodyParser.json());
 app.use("/api/rental", carRoutes);
 
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 const startServer=async()=>{
   await repository.init();
-  console.log("Odpalił init");
+  console.log("init complete");
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
   });
