@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-master:3306
--- Generation Time: Dec 18, 2024 at 02:36 PM
+-- Generation Time: Sty 10, 2025 at 05:57 PM
 -- Wersja serwera: 8.0.40
 -- Wersja PHP: 8.2.26
 
@@ -69,12 +69,13 @@ CREATE TABLE `City` (
 --
 
 INSERT INTO `City` (`id`, `state`, `name`) VALUES
-                                               (1, 'zachodniopomorskie', 'Szczecin'),
-                                               (2, 'Mazowieckie', 'Warszawa'),
-                                               (3, 'Małopolskie', 'Kraków'),
-                                               (4, 'Pomorskie', 'Gdańsk'),
-                                               (5, 'Wielkopolskie', 'Poznań'),
-                                               (6, 'Dolnośląskie', 'Wrocław');
+                                               (1, 'zachodniopomorskie', 'szczecin'),
+                                               (2, 'mazowieckie', 'warszawa'),
+                                               (3, 'małopolskie', 'kraków'),
+                                               (4, 'pomorskie', 'gdańsk'),
+                                               (5, 'wielkopolskie', 'poznań'),
+                                               (6, 'dolnośląskie', 'wrocław'),
+                                               (7, 'wygwizdowo', 'bahmut');
 
 -- --------------------------------------------------------
 
@@ -98,11 +99,11 @@ CREATE TABLE `Customer` (
 --
 
 INSERT INTO `Customer` (`id`, `name`, `surname`, `age`, `address`, `postal_code`, `city_id`, `email`) VALUES
-                                                                                                          (1, 'Jan', 'Kowalski', 30, 'ul. Zielona 1', '01-001', 1, 'jan.kowalski@example.com'),
-                                                                                                          (2, 'Anna', 'Nowak', 25, 'ul. Błękitna 5', '30-005', 2, 'anna.nowak@example.com'),
-                                                                                                          (3, 'Piotr', 'Wiśniewski', 35, 'ul. Słoneczna 10', '80-010', 3, 'piotr.wisniewski@example.com'),
-                                                                                                          (4, 'Maria', 'Zielińska', 28, 'ul. Wiosenna 15', '60-015', 4, 'maria.zielinska@example.com'),
-                                                                                                          (5, 'Tomasz', 'Lewandowski', 40, 'ul. Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com');
+                                                                                                          (1, 'Jan', 'Kowalski', 30, 'Zielona 1', '01-001', 1, 'jan.kowalski@example.com'),
+                                                                                                          (2, 'Anna', 'Nowak', 25, 'Błękitna 5', '30-005', 2, 'anna.nowak@example.com'),
+                                                                                                          (3, 'Piotr', 'Wiśniewski', 35, 'Słoneczna 10', '80-010', 3, 'piotr.wisniewski@example.com'),
+                                                                                                          (4, 'Maria', 'Zielińska', 28, 'Wiosenna 15', '60-015', 4, 'maria.zielinska@example.com'),
+                                                                                                          (5, 'Tomasz', 'Lewandowski', 40, 'Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com');
 
 -- --------------------------------------------------------
 
@@ -114,9 +115,17 @@ CREATE TABLE `Employee` (
                             `id` int NOT NULL,
                             `name` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
                             `surname` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `password_hash` varchar(512) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `login` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL
+                            `password_hash` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                            `login` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
+                            `email` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
+
+--
+-- Dumping data for table `Employee`
+--
+
+INSERT INTO `Employee` (`id`, `name`, `surname`, `password_hash`, `login`, `email`) VALUES
+    (1, 'Jeremiasz', 'Sochanski', '$2a$10$7t5z4O5ixeRqQAj1x72Ec.U0bIxdCG6xCWma0.Q8N7bBpGzuLEyhG', 'sochan69', 'jeremi@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -168,8 +177,7 @@ INSERT INTO `Rental` (`id`, `car_id`, `customer_id`, `start_date`, `end_date`, `
                                                                                                                (2, 2, 2, '2024-11-15 09:00:00', '2024-11-20 09:00:00', 1, 500),
                                                                                                                (3, 3, 3, '2024-12-05 14:00:00', '2024-12-15 14:00:00', 1, 1100),
                                                                                                                (6, 4, 4, '2024-12-01 12:00:00', '2024-12-07 12:00:00', 0, 900),
-                                                                                                               (7, 5, 5, '2024-12-10 08:00:00', '2024-12-20 08:00:00', 1, 1400),
-                                                                                                               (8, 1, 3, '2024-12-20 08:00:00', '2024-12-20 10:00:00', 0, 1600);
+                                                                                                               (7, 5, 5, '2024-12-10 08:00:00', '2024-12-20 08:00:00', 1, 1400);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -199,7 +207,8 @@ ALTER TABLE `Customer`
 -- Indeksy dla tabeli `Employee`
 --
 ALTER TABLE `Employee`
-    ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE KEY `login` (`login`);
 
 --
 -- Indeksy dla tabeli `Office`
@@ -230,19 +239,19 @@ ALTER TABLE `Car`
 -- AUTO_INCREMENT for table `City`
 --
 ALTER TABLE `City`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `Customer`
 --
 ALTER TABLE `Customer`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `Employee`
 --
 ALTER TABLE `Employee`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `Office`
@@ -254,7 +263,7 @@ ALTER TABLE `Office`
 -- AUTO_INCREMENT for table `Rental`
 --
 ALTER TABLE `Rental`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
