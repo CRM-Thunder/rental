@@ -82,6 +82,7 @@ class Service {
             const token= jwt.sign(user_data, process.env.JWT_SECRET, {expiresIn: '1h'});
             return {success:true, token:token};
         }
+        return {success:false, message:"Failed to log in, try again."}
 
 
     }
