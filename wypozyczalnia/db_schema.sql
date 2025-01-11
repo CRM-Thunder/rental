@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: mysql-master:3306
--- Generation Time: Sty 10, 2025 at 05:57 PM
+-- Generation Time: Sty 11, 2025 at 09:03 PM
 -- Wersja serwera: 8.0.40
 -- Wersja PHP: 8.2.26
 
@@ -31,11 +31,11 @@ USE `wypozyczalnia`;
 
 CREATE TABLE `Car` (
                        `id` int NOT NULL,
-                       `brand` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
-                       `model` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL,
+                       `brand` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                       `model` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                        `production_year` year NOT NULL,
-                       `color` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL,
-                       `car_registration` varchar(8) COLLATE utf8mb4_polish_ci NOT NULL,
+                       `color` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                       `car_registration` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                        `price` smallint UNSIGNED NOT NULL,
                        `office_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
@@ -60,8 +60,8 @@ INSERT INTO `Car` (`id`, `brand`, `model`, `production_year`, `color`, `car_regi
 
 CREATE TABLE `City` (
                         `id` int NOT NULL,
-                        `state` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL,
-                        `name` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL
+                        `state` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                        `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
@@ -85,13 +85,13 @@ INSERT INTO `City` (`id`, `state`, `name`) VALUES
 
 CREATE TABLE `Customer` (
                             `id` int NOT NULL,
-                            `name` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `surname` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL,
+                            `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                            `surname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                             `age` tinyint UNSIGNED NOT NULL,
-                            `address` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `postal_code` varchar(6) COLLATE utf8mb4_polish_ci NOT NULL,
+                            `address` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                            `postal_code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                             `city_id` int NOT NULL,
-                            `email` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL
+                            `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
@@ -103,7 +103,8 @@ INSERT INTO `Customer` (`id`, `name`, `surname`, `age`, `address`, `postal_code`
                                                                                                           (2, 'Anna', 'Nowak', 25, 'Błękitna 5', '30-005', 2, 'anna.nowak@example.com'),
                                                                                                           (3, 'Piotr', 'Wiśniewski', 35, 'Słoneczna 10', '80-010', 3, 'piotr.wisniewski@example.com'),
                                                                                                           (4, 'Maria', 'Zielińska', 28, 'Wiosenna 15', '60-015', 4, 'maria.zielinska@example.com'),
-                                                                                                          (5, 'Tomasz', 'Lewandowski', 40, 'Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com');
+                                                                                                          (5, 'Tomasz', 'Lewandowski', 40, 'Jesienna 20', '50-020', 5, 'tomasz.lewandowski@example.com'),
+                                                                                                          (23, 'Bartosz', 'Pieśla', 22, 'Tenisowa 45', '42-421', 1, 'sigma@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -113,11 +114,11 @@ INSERT INTO `Customer` (`id`, `name`, `surname`, `age`, `address`, `postal_code`
 
 CREATE TABLE `Employee` (
                             `id` int NOT NULL,
-                            `name` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `surname` varchar(30) COLLATE utf8mb4_polish_ci NOT NULL,
+                            `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                            `surname` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                             `password_hash` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
-                            `login` varchar(20) COLLATE utf8mb4_polish_ci NOT NULL,
-                            `email` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL
+                            `login` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                            `email` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
 --
@@ -135,8 +136,8 @@ INSERT INTO `Employee` (`id`, `name`, `surname`, `password_hash`, `login`, `emai
 
 CREATE TABLE `Office` (
                           `id` int NOT NULL,
-                          `address` varchar(64) COLLATE utf8mb4_polish_ci NOT NULL,
-                          `postal_code` varchar(6) COLLATE utf8mb4_polish_ci NOT NULL,
+                          `address` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
+                          `postal_code` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci NOT NULL,
                           `city_id` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_polish_ci;
 
@@ -177,7 +178,8 @@ INSERT INTO `Rental` (`id`, `car_id`, `customer_id`, `start_date`, `end_date`, `
                                                                                                                (2, 2, 2, '2024-11-15 09:00:00', '2024-11-20 09:00:00', 1, 500),
                                                                                                                (3, 3, 3, '2024-12-05 14:00:00', '2024-12-15 14:00:00', 1, 1100),
                                                                                                                (6, 4, 4, '2024-12-01 12:00:00', '2024-12-07 12:00:00', 0, 900),
-                                                                                                               (7, 5, 5, '2024-12-10 08:00:00', '2024-12-20 08:00:00', 1, 1400);
+                                                                                                               (7, 5, 5, '2024-12-10 08:00:00', '2024-12-20 08:00:00', 1, 1400),
+                                                                                                               (21, 2, 23, '2027-12-20 08:00:00', '2027-12-20 10:00:00', 0, 240);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -245,7 +247,7 @@ ALTER TABLE `City`
 -- AUTO_INCREMENT for table `Customer`
 --
 ALTER TABLE `Customer`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `Employee`
@@ -263,7 +265,7 @@ ALTER TABLE `Office`
 -- AUTO_INCREMENT for table `Rental`
 --
 ALTER TABLE `Rental`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+    MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- Constraints for dumped tables
