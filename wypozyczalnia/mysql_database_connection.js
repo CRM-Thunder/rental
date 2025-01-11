@@ -1,11 +1,15 @@
 const mysql = require('mysql2/promise');
-
+const fs=require('fs');
+const caCert=fs.readFileSync('./cert/ca-cert.pem');
 const master_db_config = {
   host: "127.0.0.1",
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: process.env.MASTER_PORT
+  port: process.env.MASTER_PORT,
+  ssl: {
+    ca:caCert
+  }
 };
 
 const slave_db_config = {
@@ -13,7 +17,10 @@ const slave_db_config = {
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  port: process.env.SLAVE_PORT
+  port: process.env.SLAVE_PORT,
+  ssl: {
+    ca:caCert
+  }
 };
 
 let master_db, slave_db;
