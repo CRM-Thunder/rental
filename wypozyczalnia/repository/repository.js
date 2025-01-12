@@ -119,6 +119,54 @@ class Repository {
         return rows;
 
     }
+    async getReservationInfoMaster(id){
+        if (!this.master_db) {
+            throw new Error("Database connection is not initialized");
+        }
+        const [rows]=await this.master_db.query(`SELECT 
+            Rental.id AS rentalId,
+            Rental.start_date,
+            Rental.end_date,
+            Rental.is_verified,
+            Rental.sum_price,
+            Car.id AS carId,
+            Car.brand,
+            Car.model,
+            Car.production_year,
+            Car.color,
+            Car.car_registration,
+            Car.price AS carPrice,
+            Customer.id AS customerId,
+            Customer.name AS customerName,
+            Customer.surname AS customerSurname,
+            Customer.age AS customerAge,
+            Customer.address AS customerAddress,
+            Customer.postal_code AS customerPostalCode,
+            Customer.email AS customerEmail,
+            Office.id AS officeId,
+            Office.address AS officeAddress,
+            Office.postal_code AS officePostalCode,
+            City.name AS cityName,
+            City.state AS cityState
+        FROM 
+            Rental
+        INNER JOIN 
+            Car ON Rental.car_id = Car.id
+        INNER JOIN 
+            Customer ON Rental.customer_id = Customer.id
+        INNER JOIN 
+            Office ON Car.office_id = Office.id
+        INNER JOIN 
+            City ON Office.city_id = City.id
+        WHERE 
+            Rental.id = ?;
+        `,[id]);
+        if(rows.length===0){
+            throw new Error(`Rental with ID ${id} does not exist`);
+        }
+        return rows;
+
+    }
 
     async getReservations() {
         if (!this.slave_db) {
