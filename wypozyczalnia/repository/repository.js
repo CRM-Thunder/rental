@@ -307,6 +307,33 @@ class Repository {
 
         return rows;
     }
+    async getVerifiedReservations() {
+        if (!this.slave_db) {
+            throw new Error("Database connection is not initialized");
+        }
+
+        const [rows] = await this.slave_db.query(`
+        SELECT
+            Rental.id AS rentalId,
+            Rental.start_date AS leaseStartDate,
+            Rental.end_date AS leaseEndDate,
+            Rental.sum_price AS sumPrice,
+            Customer.name AS customerName,
+            Customer.surname AS customerSurname,
+            Car.brand,
+            Car.model
+        FROM
+            Rental
+        INNER JOIN
+            Car ON Rental.car_id = Car.id
+        INNER JOIN
+            Customer ON Rental.customer_id = Customer.id
+        WHERE
+            Rental.is_verified = 1;
+    `);
+
+        return rows;
+    }
 
 
     async getAvailableCarsByOfficeAndDates(officeId, startDate, endDate) {

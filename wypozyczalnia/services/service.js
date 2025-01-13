@@ -31,6 +31,9 @@ class Service {
     async getUnverifiedReservations() {
         return await repository.getUnverifiedReservations();
     }
+    async getVerifiedReservations() {
+        return await repository.getVerifiedReservations();
+    }
     async getAvailableCarsByOfficeAndDates(officeId, startDate, endDate) {
         return await repository.getAvailableCarsByOfficeAndDates(officeId, startDate, endDate);
     }

@@ -44,6 +44,11 @@ router.get("/UnverifiedReservations",authenticateToken, async (req, res) => {
   res.json(results);
 })
 
+router.get("/VerifiedReservations",authenticateToken, async (req, res) => {
+  const results=await service.getVerifiedReservations();
+  res.json(results);
+})
+
 router.post("/AvailableCars",async (req, res) => {
   const {office_id, start_date, end_date}=req.body;
   const results=await service.getAvailableCarsByOfficeAndDates(office_id, start_date, end_date);
