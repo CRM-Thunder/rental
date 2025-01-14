@@ -2,11 +2,21 @@
 //Pobieranie listy dostępnych aut
 //*******************************
 
+
+function parseDate(input) {
+    const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+    if (regex.test(input)) {
+        return input.replace('T', ' ') + ':00';
+    } else {
+        return 'Invalid format';
+    }
+}
 function getAvailableCars() {
     const params = new URLSearchParams(window.location.search);
     const officeId = params.get('office_id');
-    const startDate = params.get('start_date');
-    const endDate = params.get('end_date');
+    const startDate = parseDate(params.get('start_date'));
+
+    const endDate = parseDate(params.get('end_date'));
 
     const xhr = new XMLHttpRequest();
     const url = 'http://localhost:3000/api/rental/AvailableCars';

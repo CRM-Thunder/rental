@@ -79,7 +79,10 @@ document.getElementById('appointment-form').addEventListener('submit', function 
 
     const officeId = document.getElementById('office-select').value;
     const startDate = document.getElementById('start-date').value;
+    console.log(startDate);
+
     const endDate = document.getElementById('end-date').value;
+    console.log(endDate);
 
     const params = new URLSearchParams({
         office_id: officeId,
