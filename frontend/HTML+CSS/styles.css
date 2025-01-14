@@ -1,0 +1,463 @@
+.full-container {
+    background-color: #77c6f3;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header-container {
+    background-color: #0984f8;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 10px 20px;
+}
+
+/* Główna zawartość */
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.top-block-container {
+    background-color: #96ccff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+h4{
+    font-weight: bold;
+}
+
+.block-text{
+    text-align: center;
+}
+
+.bottom-block-container {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px; /* Przerwa między blokami dla widoczności */
+}
+
+.block-half {
+    background-color: #96ccff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-button{
+    background-color: #0984f8;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+a {
+    color: white;
+    text-decoration: none; /* Usuwa podkreślenie */
+}
+
+
+
+/* Stopka */
+
+.footer-container {
+    background-color: #0984f8;
+    color: white;
+    padding: 10px 0;
+    font-style: italic;
+}
+
+.footer-div {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Przycisk logowania */
+
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.login-button {
+    width: 40px;
+    height: 40px;
+    background-color: #06458b;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px; /* Odstęp od prawej krawędzi */
+    text-decoration: none;
+}
+
+.login-button:hover {
+    background-color: #052e60;
+    cursor: pointer;
+}
+
+/* Formularz wyboru biura i daty */
+
+.main-content-appointment {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Wyśrodkowanie w pionie */
+    align-items: center;     /* Wyśrodkowanie w poziomie */
+    gap: 10px;
+    height: 100vh;           /* Pełna wysokość widoku */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #96ccff;
+}
+
+
+.appointment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 500px;
+}
+
+.appointment-form label {
+    font-weight: bold;
+}
+
+.appointment-form select,
+.appointment-form input,
+.appointment-form button {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Formularz do danych klienta */
+
+
+.main-content-client {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Wyśrodkowanie w pionie */
+    align-items: center;     /* Wyśrodkowanie w poziomie */
+    gap: 10px;
+    height: 100vh;           /* Pełna wysokość widoku */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #96ccff;
+}
+
+
+.client-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 500px;
+}
+
+.client-form label {
+    font-weight: bold;
+}
+
+.client-form select,
+.client-form input,
+.client-form button {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Formularz logowania dla administratora */
+
+
+.main-content-login {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Wyśrodkowanie w pionie */
+    align-items: center;     /* Wyśrodkowanie w poziomie */
+    gap: 10px;
+    height: 100vh;           /* Pełna wysokość widoku */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #96ccff;
+}
+
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 500px;
+}
+
+.login-form label {
+    font-weight: bold;
+}
+
+.login-form select,
+.login-form input,
+.login-form button {
+    padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+/* Stylowanie listy dostępnych aut */
+
+
+
+/* Stylowanie listy wszystkich aut */
+
+.main-content-cars{
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    background-color: #96ccff;
+}
+
+.car-block {
+    flex: 1 1 calc(20% - 40px); /* 20% szerokości minus margines */
+    max-width: calc(20% - 40px);
+    background-color: #77c6f3;
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.car-block h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.car-block p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+/* Stylowanie przycisku wyboru auta */
+
+#car-list{
+    display: flex;
+    gap: 20px;
+}
+
+.car-button{
+    background-color: #77c6f3;
+    color: white;
+    padding: 15px;
+    height: 200px;
+    width: 200px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.car-button h3 {
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.car-button p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+
+
+/* Stylowanie cennika */
+
+.main-content-pricing{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Wyśrodkowanie w pionie */
+    text-align: center;
+    align-items: center;     /* Wyśrodkowanie w poziomie */
+    gap: 10px;
+    height: 100vh;           /* Pełna wysokość widoku */
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #96ccff;
+}
+
+.table-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.pricing-table {
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+/* Stylowanie braku dostępnych aut */
+
+.main-content-fail{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #96ccff;
+}
+
+.fail-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* DASHBOARD */
+
+.text-link {
+    text-decoration: none;
+    color: inherit;
+}
+.header-div-dashboard{
+    text-align: center;
+}
+
+.main-content-dashboard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.article-section-dashboard {
+    flex: 5;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #ccc;
+    margin: 10px 0;
+    padding: 10px;
+    height: auto;
+    position: relative;
+}
+
+/* Pionowa kreska */
+li::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 3px;
+    background-color: #ccc;
+    left: 80%;
+}
+
+.left-block {
+    flex: 4;
+    padding-right: 20px;
+}
+
+/* Prawy blok z przyciskami */
+
+.right-block {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* style dla rental_info.html */
+
+.main-content-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Wyśrodkowanie w pionie */
+    align-items: center;     /* Wyśrodkowanie w poziomie */
+    max-width: 800px; /* Kontener z białym tłem ma stałą szerokość */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1; /
+}
+
+.main-content-details h2 {
+    text-align: center;
+    font-size: 2rem;
+    color: #0984f8;
+    margin-bottom: 20px;
+}
+
+.main-content-details p {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.main-content-details strong {
+    font-weight: bold;
+    color: #0984f8;
+}
