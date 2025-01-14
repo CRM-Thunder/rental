@@ -2,7 +2,8 @@ const express = require("express");
 const router = express.Router();
 const service=require("./services/service.js");
 const authenticateToken=require("./middleware/middleware");
-
+const {availableCarsValidator,addReservationValidator} = require("./middleware/validator");
+const {validationResult} = require("express-validator");
 
 router.get("/CarsWithDetails", async (req, res) => {
       const results= await service.getCarsWithDetails();
@@ -49,10 +50,16 @@ router.get("/VerifiedReservations",authenticateToken, async (req, res) => {
   res.json(results);
 })
 
-router.post("/AvailableCars",async (req, res) => {
-  const {office_id, start_date, end_date}=req.body;
-  const results=await service.getAvailableCarsByOfficeAndDates(office_id, start_date, end_date);
-  res.json(results);
+router.post("/AvailableCars",availableCarsValidator,async (req, res) => {
+  const errors=validationResult(req);
+  if(!errors.isEmpty()){
+    res.status(422).json({errors:errors.array()})
+  }else{
+    const {office_id, start_date, end_date}=req.body;
+    const results=await service.getAvailableCarsByOfficeAndDates(office_id, start_date, end_date);
+    res.json(results);
+  }
+
 })
 
 router.get("/EmployeeInfo",authenticateToken,async (req,res)=>{
@@ -60,10 +67,15 @@ router.get("/EmployeeInfo",authenticateToken,async (req,res)=>{
   res.json(results);
 })
 
-router.post("/Reservation", async (req, res) => {
-  const {car_id, customer, start_date, end_date}=req.body;
-  const results=await service.addRental(car_id, customer, start_date, end_date);
-  res.json(results);
+router.post("/Reservation",addReservationValidator, async (req, res) => {
+  const errors=validationResult(req);
+  if(!errors.isEmpty()){
+    res.status(422).json({errors:errors.array()});
+  }
+  else{ const {car_id, customer, start_date, end_date}=req.body;
+    const results=await service.addRental(car_id, customer, start_date, end_date);
+    res.json(results);}
+
 })
 
 router.post("/Login", async (req, res)=>{
