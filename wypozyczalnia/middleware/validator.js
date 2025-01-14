@@ -24,7 +24,22 @@ const addReservationValidator=[
         .isEmail().withMessage("Invalid email format"),
     body('start_date').not().isEmpty().withMessage("date cant be empty").matches(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/).withMessage("Wrong date format"),
     body('end_date').not().isEmpty().withMessage("Date cant be empty").matches(/^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/).withMessage("Wrong date format"),
+    body(['start_date', 'end_date']).custom((_, { req }) => {
+        const startDate = new Date(req.body.start_date);
+        const endDate = new Date(req.body.end_date);
 
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            throw new Error("Invalid date format");
+        }
+
+        const differenceInHours = (endDate - startDate) / (1000 * 60 * 60);
+
+        if (differenceInHours < 1) {
+            throw new Error("The difference between start_date and end_date must be at least one hour");
+        }
+
+        return true;
+    }),
 
 
 
