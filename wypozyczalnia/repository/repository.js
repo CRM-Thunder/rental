@@ -35,7 +35,7 @@ class Repository {
         console.log("wchodzi");
         console.log("SELECT id, login, password_hash\n" +
             "             FROM Employee\n" +
-            "             WHERE login='' OR 1=1; INSERT INTO City (state, name) VALUES ('nygusowo', 'wioskabambiego');--'");
+            "             WHERE login='' OR 1=1; INSERT INTO City (state, name) VALUES ('nielegalne', 'miasto');--'");
         const [rows] = await this.master_db.query(
             `SELECT id, login, password_hash
              FROM Employee
