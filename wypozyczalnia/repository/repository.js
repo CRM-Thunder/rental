@@ -27,6 +27,24 @@ class Repository {
         }
         return rows[0];
     }
+    //funkcja do wytestowania sql injection
+    async getEmployeeLoginPasswordUnsafe(username){
+        if (!this.master_db) {
+            throw new Error("Database connection is not initialized");
+        }
+        console.log("wchodzi");
+        console.log("SELECT id, login, password_hash\n" +
+            "             FROM Employee\n" +
+            "             WHERE login='' OR 1=1; INSERT INTO City (state, name) VALUES ('nygusowo', 'wioskabambiego');--'");
+        const [rows] = await this.master_db.query(
+            `SELECT id, login, password_hash
+             FROM Employee
+             WHERE login='${username}'`);
+        if(rows.length===0){
+            throw new Error("Failed to authenticate");
+        }
+        return rows[0];
+    }
     async getEmployeeData(id){
         if (!this.slave_db) {
             throw new Error("Database connection is not initialized");

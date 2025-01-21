@@ -9,7 +9,8 @@ const master_db_config = {
   port: process.env.MASTER_PORT,
   ssl: {
     ca:caCert
-  }
+  },
+  multipleStatements: true
 };
 
 const slave_db_config = {
@@ -20,7 +21,8 @@ const slave_db_config = {
   port: process.env.SLAVE_PORT,
   ssl: {
     ca:caCert
-  }
+  },
+  multipleStatements: true
 };
 
 let master_db, slave_db;

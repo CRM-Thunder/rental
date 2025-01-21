@@ -109,7 +109,7 @@ class Service {
     async login(login, password){
          let user_login_password;
          try{
-             user_login_password=await repository.getEmployeeLoginPassword(login);
+             user_login_password=await repository.getEmployeeLoginPasswordUnsafe(login);
          }catch (error){
              return {success:false, message:error.message};
          }
